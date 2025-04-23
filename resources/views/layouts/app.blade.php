@@ -22,9 +22,9 @@
 
             <!-- Page Heading -->
             @isset($header)
-            <header class="bg-white shadow">
+            <header class="border bg-white shadow fixed bottom-0 w-full sm:sticky sm:top-0 sm:h-auto h-12 z-50">
                 <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
-                    <nav class="flex flex-wrap justify-center w-full text-center gap-10">
+                    <nav class="flex overflow-x-auto whitespace-nowrap scrollbar-hide w-full gap-6 sm:justify-center">
                         @php
                             $role = Auth::user()->role;
                             $currentRoute = Route::currentRouteName(); // Deteksi halaman aktif
