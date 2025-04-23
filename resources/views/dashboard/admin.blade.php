@@ -8,29 +8,29 @@
             </div> -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
                 <!-- Jumlah User -->
-                <div class="bg-green-600 rounded-lg p-6 flex flex-col items-center shadow-md">
+                <div class="bg-gray-100 rounded-lg p-6 flex flex-col items-center shadow-md">
                     <i class="fas fa-users text-3xl text-orange-500"></i>
-                    <p class="text-lg font-medium mt-2">Total Pengguna</p>
-                    <p class="text-2xl font-bold text-white">{{ $totalUsers }}</p>
+                    <p class="text-lg font-medium mt-2">Akun</p>
+                    <p class="text-2xl font-bold">{{ $totalUsers }}</p>
                 </div>
 
                 <!-- Jumlah SKPD -->
-                <div class="bg-indigo-500 rounded-lg p-6 flex flex-col items-center shadow-md">
+                <div class="bg-gray-100 rounded-lg p-6 flex flex-col items-center shadow-md">
                     <i class="fas fa-building text-3xl text-red-700"></i>
-                    <p class="text-lg font-medium mt-2">Total SKPD</p>
-                    <p class="text-2xl font-bold text-white">{{ $totalSkpds }}</p>
+                    <p class="text-lg font-medium mt-2">SKPD</p>
+                    <p class="text-2xl font-bold">{{ $totalSkpds }}</p>
                 </div>
 
-                <div class="bg-orange-400 rounded-lg p-6 flex flex-col items-center shadow-md">
+                <div class="bg-gray-100 rounded-lg p-6 flex flex-col items-center shadow-md">
                     <i class="fas fa-file-zipper text-3xl text-indigo-600"></i>
                     <p class="text-lg font-medium mt-2">Nota Dinas</p>
-                    <p class="text-2xl font-bold text-white">{{ $notaDinas }}</p>
+                    <p class="text-2xl font-bold">{{ $notaDinas }}</p>
                 </div>
 
-                <div class="bg-cyan-400 rounded-lg p-6 flex flex-col items-center shadow-md">
+                <div class="bg-gray-100 rounded-lg p-6 flex flex-col items-center shadow-md">
                     <i class="fas fa-square-check text-3xl text-green-700"></i>
                     <p class="text-lg font-medium mt-2">Selesai</p>
-                    <p class="text-2xl font-bold text-white">{{ $notaSelesai }}</p>
+                    <p class="text-2xl font-bold">{{ $notaSelesai }}</p>
                 </div>
             </div>
         </div>

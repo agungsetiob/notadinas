@@ -31,7 +31,7 @@
 
         <div>
             <x-input-label for="skpd" :value="__('SKPD')" />
-            <select id="skpd" name="skpd_id" class="mt-1 block w-full rounded-md">
+            <select id="skpd" name="skpd_id" class="mt-1 block w-full rounded-md border-gray-300">
                 @foreach ($skpds as $skpd)
                     <option value="{{ $skpd->id }}" {{ old('skpd_id', $user->skpd_id) == $skpd->id ? 'selected' : '' }}>
                         {{ $skpd->nama_skpd }}
