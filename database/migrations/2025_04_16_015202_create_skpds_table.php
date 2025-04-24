@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_skpd');
             $table->boolean('status')->default(true);
-            $table->foreignId('asisten_id')->nullable()->constrained('users');
+            //$table->foreignId('asisten_id')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

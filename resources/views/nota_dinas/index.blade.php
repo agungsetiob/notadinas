@@ -134,8 +134,6 @@
     @if (auth()->user()->role === 'bupati' && $notas->isNotEmpty())
         @include('components.modal-persetujuan')
     @endif
-
-
     @include('components.modal-kirim-nota')
     @include('components.modal-pengembalian')
     @include('components.modal-lampiran')

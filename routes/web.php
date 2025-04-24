@@ -13,10 +13,6 @@ Route::get('/', function () {
     return view('auth.login');
 })->middleware('guest');
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -52,8 +48,6 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'role:skpd,asisten,sekda,bupati'])->group(function () {
     Route::post('/nota-dinas/{nota}/kembalikan', [NotaPengirimanController::class, 'returnNota'])->name('nota.kembalikan');
-    //Route::resource('nota-dinas', NotaDinasController::class);
-    //Route::get('/nota/{id}/histori-pengiriman', [NotaPengirimanController::class, 'history'])->name('nota.pengiriman.history');
 });
 
 
