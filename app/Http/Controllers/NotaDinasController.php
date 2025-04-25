@@ -147,20 +147,20 @@ class NotaDinasController extends Controller
     }
     public function getLampiranHistori($tipe, $id)
     {
-        $lampiran = collect();
-    
         $pengiriman = NotaPengiriman::findOrFail($id);
-        $lampiran = NotaLampiran::where('nota_pengiriman_id', $pengiriman->id)->get();
-    
+        $lampirans = $pengiriman->lampirans;
+        //sleep(2);
         return response()->json(
-            $lampiran->map(function ($file) {
+            $lampirans->map(function ($file) {
                 return [
                     'name' => $file->nama_file,
-                    'url' => asset('storage/' . $file->path),
+                    'url'  => asset('storage/' . $file->path),
+                    'created_at' => $file->created_at,
                 ];
             })
         );
     }
+    
     public function approveOrRejectNota(Request $request, $notaId)
     {
         if (auth()->user()->role !== 'bupati') {

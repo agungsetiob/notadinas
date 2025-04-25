@@ -25,9 +25,10 @@ class NotaLampiran extends Model
     {
         return $this->belongsTo(NotaDinas::class);
     }
-    public function notaPengiriman()
+    public function pengirimans()
     {
-        return $this->belongsTo(NotaPengiriman::class);
-    }
+        return $this->belongsToMany(NotaPengiriman::class, 'nota_pengiriman_lampiran', 'nota_lampiran_id', 'nota_pengiriman_id')
+                    ->withTimestamps();
+    }    
    
 }

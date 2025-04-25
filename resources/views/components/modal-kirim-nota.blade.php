@@ -19,7 +19,7 @@
                     class="w-full border-gray-300 rounded-md shadow-sm px-3 py-2"></textarea>
             </div>
 
-            {{-- @if (Auth::user()->role === 'skpd') --}}
+            @if (Auth::user()->role === 'skpd')
                 <div class="mb-4">
                     <label for="lampiran" class="block text-sm font-medium text-gray-700 mb-1">Lampiran bisa lebih dari 1 (opsional)</label>
                     <input type="file" accept="application/pdf" name="lampiran[]" id="lampiran" multiple class="block w-full text-sm text-gray-700
@@ -29,7 +29,7 @@
                                         file:bg-indigo-50 file:text-indigo-700
                                         hover:file:bg-indigo-100">
                 </div>
-            {{--@endif--}}
+            @endif
 
             <div class="flex justify-end gap-2">
                 <button type="button" onclick="closeSendModal()"

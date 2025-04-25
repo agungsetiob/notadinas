@@ -100,7 +100,10 @@
                 .then(data => {
                     if (data.length > 0) {
                         list.innerHTML = data.map(file => 
-                            `<li><a href="${file.url}" target="_blank" class="text-blue-600 hover:underline">${file.name}</a></li>`
+                            `<li>
+                            <a href="${file.url}" target="_blank" class="text-blue-600 hover:underline">${file.name}</a>
+                            <span class="text-gray-500 text-xs">(${new Date(file.created_at).toLocaleString()})</span>
+                            </li>`
                         ).join('');
                     } else {
                         list.innerHTML = '<li>Tidak ada lampiran.</li>';

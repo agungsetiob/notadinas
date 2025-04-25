@@ -17,11 +17,12 @@ class NotaPengirimanController extends Controller
         $pengirim = Auth::user();
 
         $request->validate([
-            'catatan' => 'nullable|string|max:500',
-            'lampiran.*' => 'nullable|file|max:4096',
-            'dikirim_ke' => 'nullable|in:asisten,sekda,bupati,skpd',
+            'catatan'       => 'nullable|string|max:500',
+            'lampiran.*'    => 'nullable|file|max:4096',
+            'dikirim_ke'    => 'nullable|in:asisten,sekda,bupati,skpd',
         ]);
 
+        // Tentukan tujuan pengiriman berdasarkan tahap nota saat ini
         $dari = $nota->tahap_saat_ini;
         if ($dari === 'skpd') {
             $ke = 'asisten';
@@ -33,50 +34,71 @@ class NotaPengirimanController extends Controller
             $ke = $request->dikirim_ke ?? abort(400, 'Tujuan pengiriman tidak valid.');
         }
 
+        // Buat data pengiriman baru
         $pengiriman = NotaPengiriman::create([
             'nota_dinas_id' => $nota->id,
-            'dikirim_dari' => $dari,
-            'dikirim_ke' => $ke,
-            'pengirim_id' => $pengirim->id,
-            'catatan' => $request->catatan,
+            'dikirim_dari'  => $dari,
+            'dikirim_ke'    => $ke,
+            'pengirim_id'   => $pengirim->id,
+            'catatan'       => $request->catatan,
         ]);
 
-        /*NotaLampiran::where('nota_dinas_id', $nota->id)
-            ->whereNull('nota_pengiriman_id')
-            ->update(['nota_pengiriman_id' => $pengiriman->id]);*/
+        // Kumpulan array untuk menyimpan id lampiran yang akan dipasang di pivot
+        $lampiranIds = [];
 
         if ($request->hasFile('lampiran')) {
+            // Jika ada lampiran baru, simpan tiap file dan simpan record NotaLampiran baru
             foreach ($request->file('lampiran') as $file) {
                 $path = $file->store('lampiran_nota', 'public');
 
-                NotaLampiran::create([
+                $lampiran = NotaLampiran::create([
                     'nota_dinas_id' => $nota->id,
-                    'nota_pengiriman_id' => $pengiriman->id,
-                    'nama_file' => $file->getClientOriginalName(),
-                    'path' => $path,
+                    'nama_file'     => $file->getClientOriginalName(),
+                    'path'          => $path,
                 ]);
+
+                $lampiranIds[] = $lampiran->id;
+            }
+        } else {
+            // Jika tidak ada lampiran baru, ambil lampiran dari pengiriman terakhir sebelum pengiriman baru
+            $prevPengiriman = NotaPengiriman::where('nota_dinas_id', $nota->id)
+                ->where('id', '<', $pengiriman->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            if ($prevPengiriman) {
+                $lampiranIds = $prevPengiriman->lampirans()->pluck('nota_lampirans.id')->toArray();
             }
         }
 
+        // Jika ada lampiran (baik baru maupun dari pengiriman sebelumnya), attach ke pengiriman via tabel pivot
+        if (!empty($lampiranIds)) {
+            $pengiriman->lampirans()->attach($lampiranIds);
+        }
+
+        // Jika pengirim memiliki role asisten/sekda, catat persetujuan
         if (in_array($pengirim->role, ['asisten', 'sekda'])) {
             NotaPersetujuan::create([
-                'nota_dinas_id' => $nota->id,
-                'approver_id' => $pengirim->id,
-                'skpd_id' => $nota->skpd_id,
-                'role_approver' => $pengirim->role,
-                'urutan' => $pengirim->role === 'asisten' ? 1 : 2,
-                'status' => 'disetujui',
+                'nota_dinas_id'    => $nota->id,
+                'approver_id'      => $pengirim->id,
+                'skpd_id'          => $nota->skpd_id,
+                'role_approver'    => $pengirim->role,
+                'urutan'           => $pengirim->role === 'asisten' ? 1 : 2,
+                'status'           => 'disetujui',
                 'catatan_terakhir' => $request->catatan,
-                'tanggal_update' => now(),
+                'tanggal_update'   => now(),
             ]);
         }
 
+        // Perbarui status dan tahap nota
         $nota->update([
             'tahap_saat_ini' => $ke,
-            'status' => 'proses',
+            'status'         => 'proses',
         ]);
 
-        return redirect()->back()->with('success', "Nota berhasil dikirim ke " . ucfirst($ke) . " dan dicatat sebagai persetujuan.");
+        return redirect()
+            ->back()
+            ->with('success', "Nota berhasil dikirim ke " . ucfirst($ke) . " dan dicatat sebagai persetujuan.");
     }    
 
     public function history($id)

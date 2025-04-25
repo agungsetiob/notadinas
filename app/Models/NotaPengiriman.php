@@ -36,6 +36,13 @@ class NotaPengiriman extends Model
         return $this->belongsTo(User::class, 'pengirim_id');
     }
 
+    public function lampirans()
+    {
+        return $this->belongsToMany(NotaLampiran::class, 'nota_pengiriman_lampiran', 'nota_pengiriman_id', 'nota_lampiran_id')
+                    ->withTimestamps();
+    }
+
+
     protected $casts = [
         'lampiran' => 'array',
     ];    
