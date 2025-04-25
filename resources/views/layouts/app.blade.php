@@ -20,7 +20,7 @@
         <div class="min-h-screen bg-pattern">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
+            <!-- Page Heading baru -->
             @isset($header)
             <header class="border bg-white shadow fixed bottom-0 w-full sm:sticky sm:top-0 sm:h-auto h-12">
                 <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center">
