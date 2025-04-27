@@ -40,3 +40,15 @@
         </form>
     </div>
 </div>
+<script>
+    function openSendModal(notaId) {
+        document.getElementById('sendForm').action = `/nota-dinas/${notaId}/kirim`;
+        document.getElementById('sendModal').classList.remove('hidden');
+        document.getElementById('sendModal').classList.add('flex');
+    }
+
+    function closeSendModal() {
+        document.getElementById('sendModal').classList.add('hidden');
+        document.getElementById('sendModal').classList.remove('flex');
+    }
+</script>

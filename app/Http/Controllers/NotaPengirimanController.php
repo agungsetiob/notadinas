@@ -18,7 +18,7 @@ class NotaPengirimanController extends Controller
 
         $request->validate([
             'catatan'       => 'nullable|string|max:500',
-            'lampiran.*'    => 'nullable|file|max:4096',
+            'lampiran.*'    => 'nullable|file|mimes:pdf|max:4096',
             'dikirim_ke'    => 'nullable|in:asisten,sekda,bupati,skpd',
         ]);
 
@@ -90,7 +90,6 @@ class NotaPengirimanController extends Controller
             ]);
         }
 
-        // Perbarui status dan tahap nota
         $nota->update([
             'tahap_saat_ini' => $ke,
             'status'         => 'proses',
@@ -105,7 +104,6 @@ class NotaPengirimanController extends Controller
     {
         $nota = NotaDinas::findOrFail($id);
         $pengiriman = $nota->pengirimans()->with(['pengirim'])->latest('tanggal_kirim')->get();
-        //$historiPersetujuans = $nota->persetujuanHistories()->with('approver')->orderBy('urutan')->get();
 
         return view('nota_dinas.histori_pengiriman', compact('nota', 'pengiriman'));
     }

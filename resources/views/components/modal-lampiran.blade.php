@@ -14,7 +14,7 @@
 </div>
 
 <script>
-    function openLampiranModal(id, tipe) {
+    function openLampiranModal(id) {
         const modal = document.getElementById('lampiranModal');
         const list = document.getElementById('lampiranList');
         list.innerHTML = '<li>Loading...</li>';
@@ -22,24 +22,32 @@
         modal.classList.add('flex');
 
         fetch(`/nota/lampiran/${id}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.length > 0) {
-                    list.innerHTML = data.map(file => 
-                        `<li>
-                            <a href="${file.url}" target="_blank" class="text-blue-600 hover:underline">${file.name}</a> 
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(result => {
+                if (result.success && result.data.length > 0) {
+                    list.innerHTML = result.data.map(file => 
+                        `<li class="mb-2">
+                            <a href="${file.url}" target="_blank" class="text-blue-600 hover:underline">${file.name}</a>
                             <span class="text-gray-500 text-xs">(${new Date(file.created_at).toLocaleString()})</span>
                         </li>`
                     ).join('');
                 } else {
-                    list.innerHTML = '<li>Tidak ada lampiran.</li>';
+                    list.innerHTML = '<li class="text-gray-500">Tidak ada lampiran.</li>';
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                list.innerHTML = '<li class="text-red-500">Gagal memuat lampiran.</li>';
             });
     }
 
     function closeLampiranModal() {
-        const modal = document.getElementById('lampiranModal');
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
+        document.getElementById('lampiranModal').classList.add('hidden');
+        document.getElementById('lampiranModal').classList.remove('flex');
     }
 </script>

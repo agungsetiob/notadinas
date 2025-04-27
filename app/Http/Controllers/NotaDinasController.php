@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\NotaDinas;
-use App\Models\NotaLampiran;
 use App\Models\NotaPengiriman;
 use App\Models\NotaPersetujuan;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +50,7 @@ class NotaDinasController extends Controller
             'perihal' => 'required|string|max:255',
             'anggaran' => 'required|numeric',
             'tanggal_pengajuan' => 'required|date',
-            'lampiran.*' => 'nullable|file|max:2048',
+            //'lampiran.*' => 'nullable|file|max:2048',
         ]);
 
         $nota = NotaDinas::create([
@@ -63,19 +62,7 @@ class NotaDinasController extends Controller
             'status' => 'draft',
             'tahap_saat_ini' => 'skpd',
             'asisten_id' => auth()->user()->skpd->asisten_id ?? null,
-        ]);
-
-        /*if ($request->hasFile('lampiran')) {
-            foreach ((array) $request->file('lampiran') as $file) {
-                $path = $file->store('lampiran_nota', 'public');
-        
-                NotaLampiran::create([
-                    'nota_dinas_id' => $nota->id,
-                    'nama_file' => $file->getClientOriginalName(),
-                    'path' => $path,
-                ]);
-            }
-        }*/        
+        ]);      
 
         return redirect()->route('nota-dinas.index')->with('success', 'Nota berhasil dibuat.');
     }
@@ -91,7 +78,7 @@ class NotaDinasController extends Controller
             'perihal' => 'required|string|max:255',
             'anggaran' => 'required|numeric',
             'tanggal_pengajuan' => 'required|date',
-            'lampiran.*' => 'nullable|file|max:2048',
+            //'lampiran.*' => 'nullable|file|mimes:pdf|max:2048',
         ]);
     
         DB::transaction(function () use ($notaDina, $validated, $request) {
@@ -142,8 +129,11 @@ class NotaDinasController extends Controller
                 'created_at' => $lampiran->created_at,
             ];
         });
-
-        return response()->json($lampirans);
+        return response()->json([
+            'success' => true,
+            'data' => $lampirans
+        ]); //return array data
+        //return response()->json($lampirans);
     }
     public function getLampiranHistori($tipe, $id)
     {

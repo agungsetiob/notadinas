@@ -1,4 +1,4 @@
-<!-- Modal -->
+    <!-- Modal -->
     <div id="notaModal" class="fixed z-50 inset-0 bg-gray-800 bg-opacity-50 hidden justify-center items-center">
         <div class="bg-white p-4 sm:p-6 rounded-lg w-11/12 sm:w-full max-w-5xl">
             <h3 id="modalTitle" class="text-lg font-semibold mb-4">Tambah Nota Dinas</h3>
@@ -49,3 +49,36 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function openCreateModal() {
+            document.getElementById('modalTitle').innerText = 'Tambah Nota Dinas';
+            document.getElementById('notaForm').action = '{{ route('nota-dinas.store') }}';
+            document.getElementById('nomorNotaField').value = '';
+            document.getElementById('perihalField').value = '';
+            document.getElementById('anggaranField').value = '';
+            document.getElementById('tanggalField').value = '';
+            document.getElementById('notaModal').classList.remove('hidden');
+            document.getElementById('notaModal').classList.add('flex');
+        }
+
+        function openEditModal(id, nomor, perihal, anggaran, tanggal) {
+            const editUrl = `{{ url('nota-dinas') }}/${id}`;
+            document.getElementById('modalTitle').innerText = 'Edit Nota Dinas';
+            document.getElementById('notaForm').action = editUrl;
+            document.getElementById('methodField').value = 'PUT';
+            document.getElementById('notaId').value = id;
+            document.getElementById('nomorNotaField').value = nomor;
+            document.getElementById('perihalField').value = perihal;
+            document.getElementById('anggaranField').value = anggaran;
+            document.getElementById('tanggalField').value = tanggal;
+            document.getElementById('notaModal').classList.remove('hidden');
+            document.getElementById('notaModal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('notaModal').classList.add('hidden');
+            document.getElementById('notaModal').classList.remove('flex');
+            document.getElementById('notaForm').reset();
+        }
+    </script>

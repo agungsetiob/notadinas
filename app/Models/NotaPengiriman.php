@@ -42,7 +42,6 @@ class NotaPengiriman extends Model
                     ->withTimestamps();
     }
 
-
     protected $casts = [
         'lampiran' => 'array',
     ];    

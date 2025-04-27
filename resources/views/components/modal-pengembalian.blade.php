@@ -21,3 +21,16 @@
         </form>
     </div>
 </div>
+<script>    
+    function openReturnModal(notaId) {
+        document.getElementById('returnForm').action = `/nota-dinas/${notaId}/kembalikan`;
+        document.getElementById('notaReturnId').value = notaId;
+        document.getElementById('returnModal').classList.remove('hidden');
+        document.getElementById('returnModal').classList.add('flex');
+    }
+
+    function closeReturnModal() {
+        document.getElementById('returnModal').classList.add('hidden');
+        document.getElementById('returnModal').classList.remove('flex');
+    }
+</script>

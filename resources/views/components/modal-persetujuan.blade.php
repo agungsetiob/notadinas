@@ -28,3 +28,13 @@
         </form>
     </div>
 </div>
+<script>
+    function openApprovalModal(){
+        document.getElementById('approvalModal').classList.remove('hidden');
+        document.getElementById('approvalModal').classList.add('flex');
+    }
+    function closeApprovalModal() {
+        document.getElementById('approvalModal').classList.add('hidden');
+        document.getElementById('approvalModal').classList.remove('flex');
+    }
+</script>
